@@ -1,80 +1,85 @@
-import {
-    registerWithEmailPassword,
-    signInWithEmailPassword,
-    signInWithGooglePopup,
-    signOutUser,
-    subscribeToAuthChanges,
-} from "./auth.js";
+import { subscribeToAuthChanges, signInWithGooglePopup, signOutUser } from "./auth.js";
+import { renderAuthLoading, renderAuthUI } from "./ui.js";
 import { firebaseConfigError } from "./firebaseClient.js";
 import {
     getAuthorizationError,
     isAuthorizationConfigured,
     isUserAuthorizedByEmail,
 } from "./authorization.js";
-import { renderAuthLoading, renderAuthUI } from "./ui.js";
 
 export function initAuthPage({ rootId, redirectOnSuccessTo }) {
     const root = document.getElementById(rootId);
     if (!root) return;
 
     let busy = false;
-    let mode = "signin";
     let error = firebaseConfigError || "";
+
     let currentUserEmail = null;
     let authorized = false;
+    let showUnauthorizedDialog = false;
 
     renderAuthLoading(root);
 
     function updateUI() {
         renderAuthUI(root, {
-            busy,
-            mode,
-            error,
             userEmail: currentUserEmail,
             authorized,
-            onGoogle: onGoogle,
-            onEmailSignIn: onEmailSignIn,
-            onEmailRegister: onEmailRegister,
-            onSignOut: onSignOut,
-            onModeChange: onModeChange,
+            showUnauthorizedDialog,
+            busy,
+            error,
+            onSignIn: handleSignIn,
+            onSignOut: handleSignOut,
+            onUnauthorizedOk: handleUnauthorizedOk,
         });
     }
 
-    function onModeChange(nextMode) {
-        mode = nextMode === "register" ? "register" : "signin";
-        error = "";
-        updateUI();
-    }
-
-    async function guarded(action) {
+    async function handleSignIn() {
         if (busy) return;
         busy = true;
         error = "";
         updateUI();
+
         try {
-            await action();
-        } catch (err) {
-            error = err?.message ? String(err.message) : "Authentication failed.";
+            await signInWithGooglePopup();
+        } catch (e) {
+            error = e?.message ? String(e.message) : "Sign-in failed.";
         } finally {
             busy = false;
             updateUI();
         }
     }
 
-    function onGoogle() {
-        return guarded(() => signInWithGooglePopup());
+    async function handleSignOut() {
+        if (busy) return;
+        busy = true;
+        error = "";
+        updateUI();
+
+        try {
+            await signOutUser();
+        } catch (e) {
+            error = e?.message ? String(e.message) : "Sign-out failed.";
+        } finally {
+            busy = false;
+            updateUI();
+        }
     }
 
-    function onEmailSignIn(email, password) {
-        return guarded(() => signInWithEmailPassword(email, password));
-    }
+    async function handleUnauthorizedOk() {
+        if (busy) return;
+        busy = true;
+        error = "";
+        updateUI();
 
-    function onEmailRegister(email, password) {
-        return guarded(() => registerWithEmailPassword(email, password));
-    }
-
-    function onSignOut() {
-        return guarded(() => signOutUser());
+        try {
+            await signOutUser();
+        } catch (e) {
+            error = e?.message ? String(e.message) : "Sign-out failed.";
+        } finally {
+            busy = false;
+            showUnauthorizedDialog = false;
+            updateUI();
+        }
     }
 
     subscribeToAuthChanges((user) => {
@@ -83,22 +88,26 @@ export function initAuthPage({ rootId, redirectOnSuccessTo }) {
 
         if (!user) {
             authorized = false;
+            showUnauthorizedDialog = false;
             error = firebaseConfigError || "";
             updateUI();
             return;
         }
 
         authorized = isUserAuthorizedByEmail(currentUserEmail);
-        error = getAuthorizationError(currentUserEmail);
-        if (!isAuthorizationConfigured()) {
-            error = "Set allowedEmails before using this starter.";
-        }
+        error = getAuthorizationError(currentUserEmail) || "";
+        showUnauthorizedDialog = false;
 
-        if (authorized && redirectOnSuccessTo) {
-            window.location.replace(redirectOnSuccessTo);
-            return;
+        if (authorized) {
+            if (redirectOnSuccessTo) {
+                window.location.replace(redirectOnSuccessTo);
+                return;
+            }
+        } else if (isAuthorizationConfigured() && !firebaseConfigError) {
+            showUnauthorizedDialog = true;
         }
 
         updateUI();
     });
 }
+

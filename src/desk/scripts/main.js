@@ -4,3 +4,4 @@ initDeskPage({
     rootId: "desk-root",
     redirectIfNotAuthedTo: "../auth/",
 });
+

@@ -1,273 +1,930 @@
+/* Page-specific styles for /typer */
+
+/* Typewriter line overlays (middle band = “2nd line” from top). */
 :root {
-    --bg: #000;
-    --panel: rgba(2, 6, 23, 0.88);
-    --text: #e5e7eb;
-    --muted: #94a3b8;
-    --line: #334155;
-    --accent: #60a5fa;
-    --error: #f87171;
-    --ok: #86efac;
+    /* Top band: slightly lighter than before so glyphs don’t read as “smaller” under the overlay. */
+    --tw-line1-overlay: 0.86;
+    --tw-line2-overlay: 0.72;
+    --tw-line3-overlay: 0.4;
 }
 
-* {
-    box-sizing: border-box;
-}
-
-html,
 body {
-    margin: 0;
+    background-color: #000;
+}
+
+/* Desk page: no document scroll — toolbar stays visible */
+html:has(body.typer-desk-body) {
+    height: 100%;
+    overflow: hidden;
+}
+
+.typer-desk-body {
+    height: 100%;
     min-height: 100%;
-    background: var(--bg);
-    color: var(--text);
-    font-family: "Segoe UI", Roboto, system-ui, -apple-system, sans-serif;
+    margin: 0;
+    overflow: hidden;
+    padding-top: 0;
 }
 
-.page {
-    width: min(1000px, 100%);
+.typer-main {
+    width: 60%;
     margin: 0 auto;
-    padding: 24px 16px;
+    padding: 40px 0;
 }
 
-.page-auth {
+.typer-header {
+    text-align: center;
+}
+
+.typer-title {
+    margin: 0 0 10px 0;
+    font-weight: normal;
+}
+
+.typer-root {
+    margin-top: 10px;
+    min-height: 60vh;
+    padding: 30px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.typer-intro {
     max-width: 720px;
     text-align: center;
 }
 
-.title {
-    margin: 0;
-    font-size: 2rem;
-    font-weight: 500;
+.typer-intro p {
+    margin: 0 0 14px 0;
 }
 
-.subtitle {
-    color: var(--muted);
-    margin: 10px 0 24px;
+.typer-auth-card {
+    max-width: 720px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 26px;
+    background: rgba(2, 6, 23, 0.6);
+    margin-top: 0;
 }
 
-.card {
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: var(--panel);
-    padding: 22px;
+.typer-auth-header {
+    margin: 0 0 18px 0;
 }
 
-.muted {
-    color: var(--muted);
+.typer-auth-title {
+    margin: 0 0 8px 0;
+    font-weight: normal;
 }
 
-.ok {
-    color: var(--ok);
+.typer-auth-status p {
+    margin: 0 0 12px 0;
 }
 
-.error {
-    color: var(--error);
+.auth-user {
+    color: #60a5fa;
 }
 
-.auth-section {
+.typer-auth-actions {
     display: flex;
-    flex-direction: column;
     gap: 14px;
-}
-
-.auth-buttons,
-.auth-mode-row {
-    display: flex;
-    gap: 10px;
     justify-content: center;
     flex-wrap: wrap;
+    margin: 14px 0 6px 0;
 }
 
-.auth-form {
-    display: grid;
-    gap: 8px;
-    text-align: left;
-}
-
-.auth-form input {
-    width: 100%;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: #020617;
-    color: var(--text);
-    padding: 10px 12px;
-    font-size: 1rem;
-}
-
-.btn {
+.typer-btn {
     border: none;
-    border-radius: 8px;
-    background: var(--accent);
+    background-color: #60a5fa;
     color: #000;
-    padding: 10px 14px;
-    font-size: 1rem;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 14pt;
     cursor: pointer;
 }
 
-.btn:disabled {
+.typer-btn:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+.typer-btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }
 
-.btn-secondary {
-    background: rgba(96, 165, 250, 0.15);
-    color: var(--accent);
-    border: 1px solid rgba(96, 165, 250, 0.4);
+.typer-btn-secondary {
+    background-color: rgba(96, 165, 250, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(96, 165, 250, 0.35);
 }
 
-.page-desk {
+.typer-auth-error {
+    margin: 14px 0 0 0;
+    color: #f87171;
+}
+
+/* Desk (post-auth) */
+.typer-desk-main {
     width: 100%;
     max-width: none;
     margin: 0;
     padding: 0;
-}
-
-.desk-body {
+    height: 100%;
+    min-height: 0;
     overflow: hidden;
-}
-
-.desk-shell {
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
+.desk-root {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 0;
+}
+
+.desk-shell {
+    width: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Wraps toolbar row + mobile menu (menu sits outside .desk-toolbar so focus-mode opacity does not dim it). */
+.desk-toolbar-host {
+    position: relative;
+    width: 100%;
+    flex-shrink: 0;
+    z-index: 80;
+}
+
 .desk-toolbar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 16px;
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--line);
+    justify-content: space-between;
+    gap: 10px;
+    padding: 14px 18px;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+    transition: opacity 0.2s ease;
+    position: relative;
+    z-index: 80;
+}
+
+/* Focus mode: dimmed toolbar (~60% fade) + fullscreen requested from deskPage.js */
+.desk-toolbar.desk-toolbar--faded,
+.desk-doc-title-bar.desk-toolbar--faded {
+    opacity: 0.4;
 }
 
 .desk-toolbar-left,
 .desk-toolbar-right {
     display: flex;
     align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
+    gap: 10px;
+    /* ~2nd-line atmospheric match, bumped ~25% brighter (cap at 1). */
+    opacity: min(1, calc((1 - var(--tw-line2-overlay)) * 1.25));
 }
 
-.link-btn {
+/* Phones: last saved + hamburger on one row (see mobile media query). Hidden on desktop. */
+.desk-toolbar-mobile-row {
+    display: none;
+}
+
+/* Hidden on desktop; phones use compact toolbar (see mobile media query). */
+.desk-toolbar-mobile {
+    display: none;
+}
+
+#pomodoro-panel.desk-popover--pomodoro-anchor {
+    position: absolute;
+    z-index: 90;
+    left: auto;
+    right: auto;
+    transform: none;
+}
+
+.desk-toolbar-item {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    z-index: 20;
+}
+
+.desk-hoverbox,
+.desk-popover {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    min-width: 90px;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 14px 16px;
+    background: rgba(2, 6, 23, 0.9);
+    color: #e0e0e4;
+    box-sizing: border-box;
+    z-index: 30;
+}
+
+.desk-hoverbox {
+    display: none;
+}
+
+.desk-metric-hoverbox {
+    width: 90px;
+    min-width: 90px;
+    text-align: center;
+}
+
+.desk-toolbar-item:hover .desk-hoverbox {
+    display: block;
+}
+
+.desk-hoverbox--visible {
+    display: block;
+}
+
+.desk-popover {
+    min-height: 80px;
+}
+
+.pomodoro-panel {
+    min-width: 280px;
+}
+
+.pomodoro-status-hoverbox {
+    min-width: 130px;
+    text-align: center;
+}
+
+.pomodoro-status-phase {
+    font-size: 12pt;
+    color: #94a3b8;
+    margin-bottom: 4px;
+}
+
+.pomodoro-status-time {
+    font-size: 18pt;
+    letter-spacing: 0.04em;
+    color: #e0e0e4;
+}
+
+.pomodoro-status-hoverbox--flash {
+    animation: pomodoroHoverFlash 0.6s ease-in-out 1;
+}
+
+@keyframes pomodoroHoverFlash {
+    0% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.9;
+    }
+}
+
+.pomodoro-panel-heading {
+    font-size: 14pt;
+    margin-bottom: 10px;
+}
+
+.pomodoro-panel-status {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 12pt;
+    color: #94a3b8;
+}
+
+.pomodoro-panel-timer {
+    margin: 8px 0 12px;
+    font-size: 22pt;
+    letter-spacing: 0.04em;
+}
+
+.pomodoro-runtime-actions,
+.pomodoro-settings-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.pomodoro-runtime-actions {
+    margin-bottom: 12px;
+}
+
+.pomodoro-label {
+    display: block;
+    margin: 8px 0 4px;
+    font-size: 12pt;
+    color: #94a3b8;
+}
+
+.pomodoro-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #020617;
+    color: #e0e0e4;
+    font-size: 13pt;
+    font-family: inherit;
+}
+
+.pomodoro-input:focus {
+    outline: none;
+    border-color: #60a5fa;
+}
+
+.pomodoro-error {
+    margin: 10px 0 0;
+    font-size: 12pt;
+    color: #f87171;
+}
+
+.pomodoro-settings-actions {
+    margin-top: 12px;
+}
+
+.desk-hoverbox-value {
+    font-size: 22pt;
+    color: #e0e0e4;
+}
+
+.desk-toolbar-btn {
+    appearance: none;
     background: transparent;
-    color: var(--text);
     border: none;
-    font-size: 1rem;
+    color: #e0e0e4;
+    font-size: 14pt;
+    padding: 4px 2px;
     cursor: pointer;
 }
 
-.link-btn:hover {
-    color: var(--accent);
+.desk-toolbar-btn:hover {
+    color: #88bbfb;
     text-decoration: underline;
 }
 
-.desk-doc-title {
-    text-align: center;
-    font-size: 0.95rem;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    padding: 10px 16px 0;
+.desk-toolbar-sep {
+    color: #b5bac3;
 }
 
-.typewriter-root-wrap {
-    flex: 1;
-    min-height: 0;
-    padding: 0 16px 24px;
-    display: flex;
+.desk-toolbar-saved {
+    font-size: 14pt;
+    color: #e0e0e4;
+    white-space: nowrap;
+}
+
+.desk-doc-title-bar {
+    flex-shrink: 0;
+    padding: 8px 18px 10px;
+    transition: opacity 0.2s ease;
+    /* No fill — same base as toolbar so title matches toolbar text brightness. */
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: center;
 }
 
-.typewriter-root-wrap .typewriter-textarea {
-    width: min(100%, 980px);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    background: rgba(15, 23, 42, 0.35);
-    color: #d1d5db;
-    outline: none;
-    resize: none;
-    padding-left: 14px;
-    padding-right: 14px;
-    overflow: hidden;
-    text-align: justify;
-    text-align-last: left;
-    text-justify: inter-word;
+/* Same perceived color as .desk-toolbar-btn inside .desk-toolbar-left (group opacity over black). */
+.desk-doc-title-text {
+    grid-column: 2;
+    justify-self: center;
+    font-size: 13pt;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+    color: color-mix(
+        in srgb,
+        #e0e0e4 calc(min(1, (1 - var(--tw-line2-overlay)) * 1.25) * 100%),
+        black
+    );
 }
 
-.focus-mode .desk-toolbar,
-.focus-mode .desk-doc-title {
-    opacity: 0.25;
+.desk-doc-title-saved {
+    font-size: 13pt;
+    color: color-mix(
+        in srgb,
+        #e0e0e4 calc(min(1, (1 - var(--tw-line2-overlay)) * 1.25) * 100%),
+        black
+    );
+    white-space: nowrap;
 }
 
-.overlay {
+.desk-doc-title-saved--in-title-bar {
+    grid-column: 3;
+    justify-self: end;
+}
+
+.desk-doc-title-saved--hidden {
+    visibility: hidden;
+}
+
+.write-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.78);
-    z-index: 20;
+    z-index: 2500;
+    background-color: rgba(0, 0, 0, 0.75);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 18px;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-.overlay[hidden] {
+.write-overlay[hidden] {
     display: none !important;
 }
 
-.overlay-card {
-    width: min(760px, 100%);
-    border: 1px solid var(--line);
+.write-overlay-inner {
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #334155;
     border-radius: 12px;
-    background: rgba(2, 6, 23, 0.96);
-    padding: 18px;
+    padding: 22px 24px;
+    background: rgba(2, 6, 23, 0.95);
+    color: #e0e0e4;
 }
 
-.overlay-actions {
-    margin-top: 14px;
+.write-overlay-heading {
+    margin: 0 0 14px 0;
+    font-size: 16pt;
+    font-weight: normal;
+}
+
+.write-overlay-label {
+    display: block;
+    font-size: 13pt;
+    color: #94a3b8;
+    margin-bottom: 6px;
+}
+
+.write-overlay-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #020617;
+    color: #e0e0e4;
+    font-size: 16pt;
+    font-family: inherit;
+}
+
+.write-overlay-input:focus {
+    outline: none;
+    border-color: #60a5fa;
+}
+
+.write-overlay-error {
+    margin: 10px 0 0;
+    font-size: 13pt;
+    color: #f87171;
+}
+
+.write-overlay-actions {
     display: flex;
+    gap: 12px;
     justify-content: flex-end;
+    margin-top: 18px;
 }
 
-.open-list {
+.open-doc-list {
+    margin-top: 14px;
+    width: 100%;
     max-height: 55vh;
     overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    color: #e0e0e4;
+    font-size: 14pt;
+    border: 1px solid rgba(51, 65, 85, 0.35);
+    border-radius: 10px;
+    padding: 12px;
+    box-sizing: border-box;
 }
 
-.open-item {
+.open-doc-item {
     width: 100%;
     text-align: left;
-    border: 1px solid var(--line);
-    border-radius: 8px;
+    display: block;
     padding: 10px 12px;
+    margin: 0 0 6px 0;
+    border-radius: 8px;
     background: transparent;
-    color: var(--text);
+    border: 1px solid rgba(51, 65, 85, 0.25);
+    color: #e0e0e4;
     cursor: pointer;
 }
 
-.open-item:hover {
-    border-color: var(--accent);
+.open-doc-item:last-child {
+    margin-bottom: 0;
 }
 
-.read-content {
-    max-height: 60vh;
+.open-doc-item:hover {
+    border-color: rgba(136, 187, 251, 0.65);
+}
+
+.open-doc-item[aria-current="true"] {
+    border-color: rgba(96, 165, 250, 0.9);
+    box-shadow: inset 0 0 0 1px rgba(96, 165, 250, 0.35);
+}
+
+/* Read overlay — column width matches .typewriter-stage (padding 0 300px desktop, 20px mobile) */
+.read-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2500;
+    background-color: #000;
+    overflow: hidden;
+}
+
+.read-overlay-inner {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    padding: 0 300px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.read-overlay-header {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 16px 0 12px 0;
+}
+
+.read-overlay-close {
+    padding: 4px 2px;
+    color: #8b2323;
+}
+
+.read-overlay-close:hover {
+    color: #b91c1c;
+    text-decoration: underline;
+}
+
+.read-overlay-body {
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
+    padding-bottom: 28px;
+    /* Same perceived brightness as the typewriter active line: base #d1d5db under --tw-line3-overlay. */
+    color: color-mix(in srgb, #d1d5db calc((1 - var(--tw-line3-overlay)) * 100%), black);
+    font-size: 20px;
+    line-height: 1.4;
+    font-family: inherit;
+    font-weight: 400;
     white-space: pre-wrap;
+    word-wrap: break-word;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.read-overlay-body::-webkit-scrollbar {
+    display: none;
+}
+
+/* (placeholder removed; desktop will render here next) */
+
+/* Typewriter (MVP) */
+.typewriter-stage {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 0 300px;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.typewriter-root {
+    position: relative;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+    isolation: isolate;
+    box-sizing: border-box;
+}
+
+/* When the textarea isn’t focused, slim frame around the full visible typing area. */
+.typewriter-root:not(:focus-within)::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(50% - var(--tw-active-line-offset-px, 50px));
+    height: var(--tw-visible-height-px, 120px);
+    z-index: 2;
+    pointer-events: none;
+    box-sizing: border-box;
+    box-shadow: inset 0 0 0 1px rgba(51, 65, 85, 0.6);
+}
+
+.desk-shell.pomodoro-open .typewriter-root:not(:focus-within)::before {
+    content: none;
+}
+
+.typewriter-root::after {
+    content: "";
+    position: absolute;
+    /* Match textarea: avoid transform on text stack (reduces “shrunken” glyph look). */
+    top: calc(50% - var(--tw-active-line-offset-px, 50px));
+    height: var(--tw-visible-height-px, 120px);
+    left: 0;
+    right: 0;
+    z-index: 1;
+    pointer-events: none;
+    /* Atmospheric fade: active line ~same brightness as old “middle” line;
+       lines above are darker (more atmospheric). */
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, var(--tw-line1-overlay)) 0%,
+        rgba(0, 0, 0, var(--tw-line1-overlay)) 33.333%,
+        rgba(0, 0, 0, var(--tw-line2-overlay)) 33.333%,
+        rgba(0, 0, 0, var(--tw-line2-overlay)) 66.666%,
+        rgba(0, 0, 0, var(--tw-line3-overlay)) 66.666%,
+        rgba(0, 0, 0, var(--tw-line3-overlay)) 100%
+    );
+}
+
+.typewriter-textarea {
+    position: absolute;
+    top: calc(50% - var(--tw-active-line-offset-px, 50px));
+    left: 0;
+    width: 100%;
+    z-index: 0;
+    resize: none;
+    overflow: hidden;
+    border: none;
+    outline: none;
+    background: transparent;
     color: #d1d5db;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 12px;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    font-weight: 400;
+    /* Full-width lines: stretch inter-word space so wrapped lines hit both margins. */
+    text-align: justify;
+    text-align-last: left;
+    text-justify: inter-word;
+    /* Avoid transform blur; keep glyph weight consistent across lines. */
+    transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
-@media (max-width: 800px) {
+/* Unauthorized dialog */
+.typer-dialog-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.typer-dialog {
+    width: 100%;
+    max-width: 560px;
+    text-align: center;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 22px;
+    background: rgba(2, 6, 23, 0.9);
+}
+
+.typer-dialog-title {
+    margin: 0 0 10px 0;
+    font-weight: normal;
+}
+
+.typer-dialog-message {
+    margin: 0 0 10px 0;
+    font-size: 14pt;
+}
+
+.typer-dialog-submessage {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 13pt;
+}
+
+.typer-dialog-actions {
+    margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+    .typer-main {
+        width: 100%;
+        padding: 20px 0;
+    }
+
+    .typer-auth-card {
+        margin-top: -20px;
+    }
+
+    .typewriter-stage {
+        padding: 0 20px;
+    }
+
+    .read-overlay-inner {
+        padding: 0 20px;
+    }
+}
+
+/* Phones only: collapsible toolbar + full-width typewriter. Does not alter default desktop rules above. */
+@media (max-width: 767px) {
+    /* Undo .typer-main mobile padding so desk isn’t pushed down under the later 768px rule. */
+    .typer-main.typer-desk-main {
+        padding-top: max(2px, env(safe-area-inset-top, 0px));
+        padding-bottom: max(0px, env(safe-area-inset-bottom, 0px));
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .desk-toolbar-mobile-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .desk-doc-title-saved--in-title-bar {
+        display: none;
+    }
+
+    .desk-doc-title-saved--toolbar {
+        flex: 1 1 auto;
+        min-width: 0;
+        text-align: right;
+        justify-self: unset;
+        grid-column: unset;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .desk-toolbar-mobile {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: visible;
+    }
+
+    .desk-toolbar-left,
+    .desk-toolbar-right {
+        display: none !important;
+    }
+
     .desk-toolbar {
-        flex-direction: column;
-        align-items: flex-start;
+        overflow: visible;
+        padding: 6px 18px 8px;
+        align-items: center;
+        justify-content: center;
     }
 
-    .typewriter-root-wrap {
-        padding: 0 10px 16px;
+    .desk-toolbar-mobile-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        box-sizing: border-box;
+        color: color-mix(
+            in srgb,
+            #e0e0e4 calc(min(1, (1 - var(--tw-line2-overlay)) * 1.25) * 100%),
+            black
+        );
+    }
+
+    .desk-toolbar-mobile-toggle-icon {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: currentColor;
+        border-radius: 1px;
+        box-shadow: 0 7px 0 currentColor, 0 14px 0 currentColor;
+    }
+
+    .desk-toolbar-mobile-toggle:hover {
+        color: color-mix(
+            in srgb,
+            #e0e0e4 calc(min(1, (1 - var(--tw-line2-overlay)) * 1.25) * 100%),
+            black
+        );
+        text-decoration: none;
+    }
+
+    .desk-toolbar-mobile-menu {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(100% + 10px);
+        z-index: 100;
+        max-height: min(70dvh, calc(100vh - 56px));
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 12px;
+        border: 1px solid #334155;
+        background: rgba(2, 6, 23, 0.98);
+        padding: 8px 0;
+        box-sizing: border-box;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    }
+
+    .desk-toolbar-mobile-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 16px 12px;
+        margin: 0 0 4px;
+        border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+        font-size: 13pt;
+        color: #94a3b8;
+    }
+
+    .desk-toolbar-mobile-meta-value {
+        color: #e0e0e4;
+        font-size: 16pt;
+        font-weight: 500;
+    }
+
+    .desk-toolbar-mobile-menu-item {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 14px 16px;
+        font-size: 14pt;
+        border-radius: 0;
+        border: none;
+        border-bottom: 1px solid rgba(51, 65, 85, 0.35);
+        box-sizing: border-box;
+    }
+
+    .desk-toolbar-mobile-menu-item:last-child {
+        border-bottom: none;
+    }
+
+    .desk-shell {
+        overflow-x: hidden;
+        overflow-y: visible;
+    }
+
+    #pomodoro-panel.desk-popover--pomodoro-anchor:not([hidden]) {
+        z-index: 110;
+    }
+
+    .typewriter-stage {
+        padding-left: max(12px, env(safe-area-inset-left, 0px));
+        padding-right: max(12px, env(safe-area-inset-right, 0px));
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Title bar: document title only (last saved is in .desk-toolbar-mobile-row). */
+    .desk-doc-title-bar {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding-top: 18px;
+        padding-bottom: 12px;
+    }
+
+    .desk-doc-title-text {
+        align-self: center;
+        text-align: center;
+        justify-self: unset;
+        grid-column: unset;
+        width: 100%;
+    }
+
+    /* Nudge the three-line band upward vs desktop (50%); mobile-only. */
+    .typewriter-root:not(:focus-within)::before,
+    .typewriter-root::after,
+    .typewriter-textarea {
+        top: calc(40% - var(--tw-active-line-offset-px, 50px));
     }
 }
+

@@ -1,88 +1,91 @@
-function escapeHtml(text) {
-    return String(text)
+function escapeHtml(str) {
+    return String(str)
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#39;");
+        .replaceAll("'", "&#039;");
 }
 
 export function renderAuthLoading(root) {
-    root.innerHTML = `<p class="muted">Loading auth...</p>`;
-}
-
-export function renderAuthUI(root, state) {
-    const {
-        busy,
-        error,
-        mode,
-        userEmail,
-        authorized,
-        onGoogle,
-        onEmailSignIn,
-        onEmailRegister,
-        onSignOut,
-        onModeChange,
-    } = state;
-
-    const signedIn = Boolean(userEmail);
-    const safeEmail = userEmail ? escapeHtml(userEmail) : "";
-    const isAuthorized = signedIn && authorized;
-
     root.innerHTML = `
-        <div class="auth-section">
-            ${
-                signedIn
-                    ? `<p class="${isAuthorized ? "ok" : "error"}">
-                        Signed in as <strong>${safeEmail}</strong>${isAuthorized ? "" : " (not allowlisted)"}
-                       </p>`
-                    : `<p class="muted">Sign in to continue.</p>`
-            }
-
-            <div class="auth-buttons">
-                <button class="btn" id="googleBtn" ${busy || signedIn ? "disabled" : ""}>Sign in with Google</button>
-            </div>
-
-            <div class="auth-mode-row">
-                <button class="btn btn-secondary" id="modeSignIn" ${mode === "signin" ? "disabled" : ""}>Email Sign In</button>
-                <button class="btn btn-secondary" id="modeRegister" ${mode === "register" ? "disabled" : ""}>Create Account</button>
-            </div>
-
-            <form id="emailForm" class="auth-form">
-                <label>Email</label>
-                <input id="emailInput" type="email" autocomplete="email" required ${busy || signedIn ? "disabled" : ""} />
-                <label>Password</label>
-                <input id="passwordInput" type="password" autocomplete="${mode === "register" ? "new-password" : "current-password"}" required minlength="6" ${busy || signedIn ? "disabled" : ""} />
-                <button class="btn" type="submit" ${busy || signedIn ? "disabled" : ""}>
-                    ${mode === "register" ? "Create account" : "Sign in"}
-                </button>
-            </form>
-
-            ${signedIn ? `<button class="btn btn-secondary" id="signOutBtn" ${busy ? "disabled" : ""}>Sign out</button>` : ""}
-            ${error ? `<p class="error">${escapeHtml(error)}</p>` : ""}
+        <div class="typer-auth-card">
+            <p class="tagline">Loading auth...</p>
         </div>
     `;
-
-    const googleBtn = root.querySelector("#googleBtn");
-    const signOutBtn = root.querySelector("#signOutBtn");
-    const emailForm = root.querySelector("#emailForm");
-    const modeSignIn = root.querySelector("#modeSignIn");
-    const modeRegister = root.querySelector("#modeRegister");
-    const emailInput = root.querySelector("#emailInput");
-    const passwordInput = root.querySelector("#passwordInput");
-
-    if (googleBtn) googleBtn.addEventListener("click", onGoogle);
-    if (signOutBtn) signOutBtn.addEventListener("click", onSignOut);
-    if (modeSignIn) modeSignIn.addEventListener("click", () => onModeChange("signin"));
-    if (modeRegister) modeRegister.addEventListener("click", () => onModeChange("register"));
-
-    if (emailForm) {
-        emailForm.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const email = String(emailInput?.value || "").trim();
-            const password = String(passwordInput?.value || "");
-            if (mode === "register") onEmailRegister(email, password);
-            else onEmailSignIn(email, password);
-        });
-    }
 }
+
+export function renderAuthUI(
+    root,
+    {
+        userEmail,
+        authorized,
+        showUnauthorizedDialog,
+        busy,
+        error,
+        onSignIn,
+        onSignOut,
+        onUnauthorizedOk,
+    },
+) {
+    const safeEmail = userEmail ? escapeHtml(userEmail) : null;
+    const signedIn = !!safeEmail;
+    const isAuthorized = signedIn && authorized === true;
+    const isNotAuthorized = signedIn && authorized === false;
+
+    root.innerHTML = `
+        <div class="typer-auth-card">
+            <div class="typer-auth-header">
+                <h1 class="typer-auth-title">${isAuthorized ? "&lt; Typer &gt;" : "&lt; Sign In &gt;"}</h1>
+            </div>
+
+            <div class="typer-auth-status">
+                ${
+                    !signedIn
+                        ? `<p>Not signed in.</p>`
+                        : isAuthorized
+                            ? `<p>Authorized as <span class="auth-user">${safeEmail}</span></p>`
+                            : `<p class="typer-auth-error">Signed in as <span class="auth-user">${safeEmail}</span>, but not authorized.</p>`
+                }
+            </div>
+
+            <div class="typer-auth-actions">
+                <button class="typer-btn" id="typer-sign-in-btn" ${signedIn ? "style=\"display:none\"" : ""} ${busy ? "disabled" : ""}>
+                    Sign in with Google
+                </button>
+                <button class="typer-btn typer-btn-secondary" id="typer-sign-out-btn" ${signedIn && !showUnauthorizedDialog ? "" : "style=\"display:none\""} ${busy ? "disabled" : ""}>
+                    Sign out
+                </button>
+            </div>
+
+            ${error ? `<p class="typer-auth-error">${escapeHtml(error)}</p>` : ""}
+        </div>
+        ${
+            showUnauthorizedDialog && isNotAuthorized
+                ? `
+            <div class="typer-dialog-overlay" role="dialog" aria-modal="true" aria-label="Not authorized">
+                <div class="typer-dialog">
+                    <h2 class="typer-dialog-title">&lt; Not Authorized &gt;</h2>
+                    <p class="typer-dialog-message">This account is not allowed to access the Typer page.</p>
+                    <p class="typer-dialog-submessage">Signed in as <span class="auth-user">${safeEmail}</span>.</p>
+                    <div class="typer-dialog-actions">
+                        <button class="typer-btn" id="typer-unauthorized-ok" ${busy ? "disabled" : ""}>
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `
+                : ""
+        }
+    `;
+
+    const signInBtn = root.querySelector("#typer-sign-in-btn");
+    const signOutBtn = root.querySelector("#typer-sign-out-btn");
+    const okBtn = root.querySelector("#typer-unauthorized-ok");
+
+    if (signInBtn) signInBtn.addEventListener("click", onSignIn);
+    if (signOutBtn) signOutBtn.addEventListener("click", onSignOut);
+    if (okBtn) okBtn.addEventListener("click", onUnauthorizedOk);
+}
+

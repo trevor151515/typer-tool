@@ -1,3 +1,5 @@
+/** Document fullscreen helpers (desktop browsers; user gesture required). */
+
 export function getFullscreenElement() {
     return (
         document.fullscreenElement ||
@@ -8,10 +10,10 @@ export function getFullscreenElement() {
 }
 
 export async function requestDocumentFullscreen() {
-    const element = document.documentElement;
-    if (element.requestFullscreen) return element.requestFullscreen();
-    if (element.webkitRequestFullscreen) return element.webkitRequestFullscreen();
-    if (element.msRequestFullscreen) return element.msRequestFullscreen();
+    const el = document.documentElement;
+    if (el.requestFullscreen) return el.requestFullscreen();
+    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+    if (el.msRequestFullscreen) return el.msRequestFullscreen();
 }
 
 export async function exitDocumentFullscreen() {

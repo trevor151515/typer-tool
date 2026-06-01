@@ -1,7 +1,7 @@
 import { createTypewriter } from "./typewriter.js";
 
 export function mountTypewriter({ root }) {
-    if (!root) return null;
+    if (!root) return;
 
     const tw = createTypewriter({
         fontSizePx: 20,
@@ -11,7 +11,9 @@ export function mountTypewriter({ root }) {
 
     root.style.setProperty("--tw-active-line-offset-px", `${tw.metrics.activeLineOffsetPx}px`);
     root.style.setProperty("--tw-visible-height-px", `${tw.metrics.visibleHeightPx}px`);
+
     root.replaceChildren(tw.el);
     tw.focus();
     return tw;
 }
+

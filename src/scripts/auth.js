@@ -1,48 +1,35 @@
+import { auth, googleProvider, firebaseConfigError } from "./firebaseClient.js";
 import {
-    auth,
-    googleProvider,
-    firebaseConfigError,
-} from "./firebaseClient.js";
-import {
-    createUserWithEmailAndPassword,
-    onAuthStateChanged,
-    signInWithEmailAndPassword,
     signInWithPopup,
     signOut,
+    onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+// NOTE: `auth` and `googleProvider` come from `firebaseClient.js`.
+// This module focuses on the auth flows and state subscription.
 
 export function subscribeToAuthChanges(callback) {
     if (!auth) {
         callback(null);
         return () => {};
     }
+
+    // onAuthStateChanged returns an unsubscribe function.
     return onAuthStateChanged(auth, callback);
 }
 
 export async function signInWithGooglePopup() {
     if (!auth || !googleProvider) {
-        throw new Error(firebaseConfigError || "Google auth is not configured.");
+        throw new Error(firebaseConfigError || "Firebase auth not configured.");
     }
+    // signInWithPopup opens the Google OAuth popup.
     return signInWithPopup(auth, googleProvider);
-}
-
-export async function signInWithEmailPassword(email, password) {
-    if (!auth) {
-        throw new Error(firebaseConfigError || "Email/password auth is not configured.");
-    }
-    return signInWithEmailAndPassword(auth, email, password);
-}
-
-export async function registerWithEmailPassword(email, password) {
-    if (!auth) {
-        throw new Error(firebaseConfigError || "Email/password auth is not configured.");
-    }
-    return createUserWithEmailAndPassword(auth, email, password);
 }
 
 export async function signOutUser() {
     if (!auth) {
-        throw new Error(firebaseConfigError || "Firebase auth is not configured.");
+        throw new Error(firebaseConfigError || "Firebase auth not configured.");
     }
     return signOut(auth);
 }
+
