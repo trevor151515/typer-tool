@@ -7,7 +7,7 @@ This project gives you a private writing environment with:
 
 Typer Tool gives you a minimalist, distraction-free environment that you can access from any device with an internet connection: a smartphone, tablet, laptop, desktop, or a work terminal that has a browser.
 
-If you are not technical, follow this guide top-to-bottom in order.
+If you are not a tech user, skip the 10-minute quickstart and follow the step-by-step procedure below.
 
 <br>
 <br>
@@ -21,16 +21,24 @@ If you are not technical, follow this guide top-to-bottom in order.
   <img src="assets/pc%20focus.png" alt="Typer on desktop — focus mode" width="85%" />
 </p>
 
+## What you are building
+
+You are creating a website page where:
+1. A user signs in.
+2. Allowed users can open the writing desk.
+3. The app auto-saves writing to that user's Firestore path.
+
 ## 10-minute quickstart (minimum steps)
 
-If you just want this working quickly, do these exact steps:
+If you are a tech user and familiar with GitHub, follow these steps to get setup quickly:
 
-1. **Download the project to your computer**
-   - Open the Typer Tool repository on GitHub: `https://github.com/<your-user>/<your-repo>`
-   - Click the green **Code** button, then **Download ZIP**.
+1. **Create your GitHub fork and download the project**
+   - If you do not have a GitHub account yet, you must create one and then return to this page.
+   - Click **Fork** (top right) → **Create fork**. This copies the project into your own GitHub account so you have a personal version to configure and deploy later.
+   - On **your fork** (`https://github.com/<your-github-username>/typer-tool`), click the green **Code** button, then **Download ZIP**.
    - When the download finishes:
-     - **Windows:** open your **Downloads** folder, right-click the ZIP file → **Extract All** → choose a location (for example **Documents**). Open the extracted folder — it is usually named `<your-repo>-main`.
-     - **Mac:** open **Downloads**, double-click the ZIP file to unzip it. Open the extracted folder — it is usually named `<your-repo>-main`.
+     - **Windows:** open your **Downloads** folder, right-click the ZIP file → **Extract All** → choose a location (for example **Documents**). Open the extracted folder — it is usually named `typer-tool-main`.
+     - **Mac:** open **Downloads**, double-click the ZIP file to unzip it. Open the extracted folder — it is usually named `typer-tool-main`.
    - Confirm you are in the **project root**: you should see `README.md` and `devserver.py` in the same folder. You will use this folder for all terminal steps below.
 
 2. **Install Python (one-time, if you do not already have it)**
@@ -87,25 +95,28 @@ If you just want this working quickly, do these exact steps:
 
 If you get stuck, use the full step-by-step guide below.
 
-## What you are building
-
-You are creating a website page where:
-1. A user signs in.
-2. Allowed users can open the writing desk.
-3. The app auto-saves writing to that user's Firestore path.
-
 ## 1) Get the project on your computer
 
 Do this first if you do not already have the project folder on your machine.
 
-1. Open the Typer Tool repository on GitHub in your browser: `https://github.com/<your-user>/<your-repo>`
-2. Click the green **Code** button near the top right of the repo page.
-3. Click **Download ZIP**.
-4. When the download finishes:
+### Create a GitHub account and fork Typer Tool
+
+You will work from **your own fork** of the starter repo (not a direct copy of someone else’s). That way your Firebase settings, allowlist, and GitHub Pages site all belong to your account.
+
+1. If you do not have a GitHub account yet, go to [GitHub](https://github.com/) and sign up.
+2. Open the Typer Tool starter repository in your browser (the link you were given): `https://github.com/<author-user>/typer-tool`
+3. Click **Fork** (top right of the page) → **Create fork**.
+4. GitHub copies the repo to your account. When it finishes, you should be on `https://github.com/<your-github-username>/typer-tool` — that is **your fork**.
+
+### Download your fork to your computer
+
+1. On your fork’s page (`https://github.com/<your-github-username>/typer-tool`), click the green **Code** button.
+2. Click **Download ZIP**.
+3. When the download finishes:
    - **Windows:** open your **Downloads** folder. Right-click the ZIP file → **Extract All** → choose a location (for example **Documents**). Open the extracted folder.
    - **Mac:** open **Downloads** and double-click the ZIP file to unzip it. Open the extracted folder.
-5. The extracted folder is usually named `<your-repo>-main`. That folder is your **project root**. You can rename it to something simple (for example `typer-tool`) if you want.
-6. Open the project root and confirm you see `README.md` and `devserver.py` in the same folder. Keep this folder location in mind — you will return here for terminal commands and file edits.
+4. The extracted folder is usually named `typer-tool-main`. That folder is your **project root**. You can rename it to `typer-tool` if you want.
+5. Open the project root and confirm you see `README.md` and `devserver.py` in the same folder. Keep this folder location in mind — you will return here for terminal commands and file edits.
 
 ### Files you should have
 
