@@ -5,7 +5,12 @@ This project gives you a private writing environment with:
 - saved drafts in Firestore
 - a simple allowlist so only specific emails can enter
 
+Typer Tool gives you a minimalist, distraction-free environment that you can access from any device with an internet connection: a smartphone, tablet, laptop, desktop, or a work terminal that has a browser.
+
 If you are not technical, follow this guide top-to-bottom in order.
+
+<br>
+<br>
 
 <p align="center">
   <img src="assets/mobile%20focus.png" alt="Typer on mobile — focus mode" width="45%" />
