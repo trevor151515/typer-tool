@@ -28,12 +28,12 @@ You are creating a website page where:
 2. Allowed users can open the writing desk.
 3. The app auto-saves writing to that user's Firestore path.
 
-## 10-minute quickstart (minimum steps)
+## 10-minute quickstart (summarized)
 
 If you are a tech user and familiar with GitHub, follow these steps to get setup quickly:
 
 1. **Create your GitHub fork and download the project**
-   - If you do not have a GitHub account yet, you must create one and then return to this page.
+   - If you do not have a GitHub account yet, create one and then return to this page.
    - Click **Fork** (top right) → **Create fork**. This copies the project into your own GitHub account so you have a personal version to configure and deploy later.
    - On **your fork** (`https://github.com/<your-github-username>/typer-tool`), click the green **Code** button, then **Download ZIP**.
    - When the download finishes:
@@ -95,18 +95,19 @@ If you are a tech user and familiar with GitHub, follow these steps to get setup
 
 If you get stuck, use the full step-by-step guide below.
 
+## Step-by-step guide to setting up your Typer Tool
+
 ## 1) Get the project on your computer
 
-Do this first if you do not already have the project folder on your machine.
+These steps will allow you to **fork** the Typer Tool repo and download the project to your computer.
 
 ### Create a GitHub account and fork Typer Tool
 
 You will work from **your own fork** of the starter repo (not a direct copy of someone else’s). That way your Firebase settings, allowlist, and GitHub Pages site all belong to your account.
 
-1. If you do not have a GitHub account yet, go to [GitHub](https://github.com/) and sign up.
-2. Open the Typer Tool starter repository in your browser (the link you were given): `https://github.com/<author-user>/typer-tool`
-3. Click **Fork** (top right of the page) → **Create fork**.
-4. GitHub copies the repo to your account. When it finishes, you should be on `https://github.com/<your-github-username>/typer-tool` — that is **your fork**.
+1. If you do not have a GitHub account yet, create one and then return to this page.
+2. Click **Fork** (top right of the page) → **Create fork**.
+3. GitHub copies the repo to your account. When it finishes, you should be on `https://github.com/<your-github-username>/typer-tool` — that is **your fork**.
 
 ### Download your fork to your computer
 
