@@ -1,4 +1,4 @@
-# Public Typer Tool Starter
+# Typer Tool setup
 
 This project gives you a private writing environment with:
 - sign-in (Google + Email/Password)
@@ -6,6 +6,15 @@ This project gives you a private writing environment with:
 - a simple allowlist so only specific emails can enter
 
 If you are not technical, follow this guide top-to-bottom in order.
+
+<p align="center">
+  <img src="assets/mobile%20focus.png" alt="Typer on mobile — focus mode" width="45%" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="assets/mobile%20menu.png" alt="Typer on mobile — menu" width="45%" />
+</p>
+<p align="center">
+  <img src="assets/pc%20focus.png" alt="Typer on desktop — focus mode" width="85%" />
+</p>
 
 ## 10-minute quickstart (minimum steps)
 
