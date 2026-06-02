@@ -25,7 +25,31 @@ If you are not technical, follow this guide top-to-bottom in order.
 
 If you just want this working quickly, do these exact steps:
 
-1. **Start the local site**
+1. **Download the project to your computer**
+   - Open the Typer Tool repository on GitHub: `https://github.com/<your-user>/<your-repo>`
+   - Click the green **Code** button, then **Download ZIP**.
+   - When the download finishes:
+     - **Windows:** open your **Downloads** folder, right-click the ZIP file → **Extract All** → choose a location (for example **Documents**). Open the extracted folder — it is usually named `<your-repo>-main`.
+     - **Mac:** open **Downloads**, double-click the ZIP file to unzip it. Open the extracted folder — it is usually named `<your-repo>-main`.
+   - Confirm you are in the **project root**: you should see `README.md` and `devserver.py` in the same folder. You will use this folder for all terminal steps below.
+
+2. **Install Python (one-time, if you do not already have it)**
+   - Download **Python 3** from [python.org/downloads](https://www.python.org/downloads/) and run the installer.
+   - **Windows:** on the first installer screen, check **Add python.exe to PATH**, then choose **Install Now**.
+   - **Mac:** download the macOS installer from python.org and run through the prompts (no PATH checkbox).
+   - **Open a terminal in the project root** (where `README.md` and `devserver.py` are):
+     - **Windows:** open that folder in File Explorer. Click the address bar at the top, type `cmd`, press **Enter** (Command Prompt opens in that folder).  
+       Or right-click inside the folder → **Open in Terminal** (Windows 11) or **Open PowerShell window here**.
+     - **Mac:** in Finder, open the project folder, then right-click the folder background → **New Terminal at Folder**.  
+       Or open **Terminal** (Applications → Utilities), type `cd ` (with a space after it), drag the project folder into the window, press **Enter**.
+   - In that terminal, verify:
+     ```bash
+     python --version
+     pip --version
+     ```
+   - Each command should print a version number. That confirms Python is installed and ready for the next step.
+
+3. **Start the local site**
    - Run:
      ```bash
      pip install -r requirements-dev.txt
@@ -36,26 +60,26 @@ If you just want this working quickly, do these exact steps:
      - `python devserver.py` starts a local website server on your computer so you can open the app in your browser.
    - Open `http://localhost:8000/`.
 
-2. **Create Firebase project + web app**
+4. **Create Firebase project + web app**
    - Firebase Console -> create project.
    - Project settings -> General -> add Web app (`</>`).
    - Copy config values into `src/scripts/firebaseConfig.js`.
 
-3. **Enable auth**
+5. **Enable auth**
    - Security -> Authentication -> Get started.
    - Enable **Google** and **Email/Password**.
    - Authentication -> Settings -> add authorized domain `localhost`.
 
-4. **Enable Firestore**
+6. **Enable Firestore**
    - Databases & Storage -> Firestore -> Create database.
    - Use **Standard** and **Production mode**.
    - Firestore -> Rules -> paste `firebase/firestore.rules` -> Publish.
 
-5. **Allow your email**
+7. **Allow your email**
    - Open `src/scripts/authorization.js`.
    - Replace sample emails in `allowedEmails` with your real email.
 
-6. **Test**
+8. **Test**
    - Go to `http://localhost:8000/`.
    - Sign in.
    - Create a new document and type.
@@ -70,9 +94,22 @@ You are creating a website page where:
 2. Allowed users can open the writing desk.
 3. The app auto-saves writing to that user's Firestore path.
 
-## 1) Files you should have
+## 1) Get the project on your computer
 
-Do not rename these folders unless you also update code paths:
+Do this first if you do not already have the project folder on your machine.
+
+1. Open the Typer Tool repository on GitHub in your browser: `https://github.com/<your-user>/<your-repo>`
+2. Click the green **Code** button near the top right of the repo page.
+3. Click **Download ZIP**.
+4. When the download finishes:
+   - **Windows:** open your **Downloads** folder. Right-click the ZIP file → **Extract All** → choose a location (for example **Documents**). Open the extracted folder.
+   - **Mac:** open **Downloads** and double-click the ZIP file to unzip it. Open the extracted folder.
+5. The extracted folder is usually named `<your-repo>-main`. That folder is your **project root**. You can rename it to something simple (for example `typer-tool`) if you want.
+6. Open the project root and confirm you see `README.md` and `devserver.py` in the same folder. Keep this folder location in mind — you will return here for terminal commands and file edits.
+
+### Files you should have
+
+Inside the project root, you should see:
 
 ```
 README.md
@@ -83,16 +120,39 @@ firebase/firestore.indexes.json
 src/...
 ```
 
+Do not rename these folders unless you also update code paths.
+
 ## 2) Optional: server starts check (before Firebase)
 
 This step only confirms that your local server can start.
 At this stage, Firebase is not set up yet, so full sign-in/save behavior is not expected.
 
+### Open a terminal (Windows / Mac)
+
+Open the project root in Finder or File Explorer first (where `README.md` and `devserver.py` are).
+
+- **Windows:** click the folder’s address bar, type `cmd`, press **Enter**.  
+  Or right-click inside the folder → **Open in Terminal** (Windows 11) or **Open PowerShell window here**.
+- **Mac:** in Finder, right-click the folder background → **New Terminal at Folder**.  
+  Or open **Terminal** (Applications → Utilities), type `cd ` (with a space), drag the project folder into the window, press **Enter**.
+
+### Install Python first (if needed)
+
+The local preview uses small Python tools. If `python` or `pip` is not recognized in your terminal, install **Python 3** first:
+
+1. Download from [python.org/downloads](https://www.python.org/downloads/) and run the installer.
+2. **Windows:** check **Add python.exe to PATH** on the installer’s first screen.
+3. **Mac:** download the macOS installer from python.org and run through the prompts (no PATH checkbox).
+4. In the terminal you opened above, verify:
+   ```bash
+   python --version
+   pip --version
+   ```
+   Each command should print a version number.
+
 ### What to do
 
-1. Open this project folder on your computer.
-2. Open a terminal/command window in that folder.
-3. Run:
+1. With the terminal open in the project root, run:
 
 ```bash
 pip install -r requirements-dev.txt
@@ -103,7 +163,7 @@ What these commands do:
 - `pip install -r requirements-dev.txt` installs required Python tools for local preview.
 - `python devserver.py` launches a local web server for this project.
 
-4. Open your browser and go to `http://localhost:8000/`.
+2. Open your browser and go to `http://localhost:8000/`.
 
 ### What you should see
 
@@ -112,7 +172,8 @@ What these commands do:
 - You may also see a Firebase configuration message until setup is completed in Section 3.
 
 If you do not see the page:
-- Make sure you ran the commands inside the same folder that contains `devserver.py`.
+- If the terminal says `python` or `pip` is not recognized, install Python (see **Install Python first** above), open a **new** terminal window, and try again. On Mac, if needed, use `python3` instead of `python`.
+- Make sure your terminal is open in the **project root** — the top-level folder where `README.md` and `devserver.py` sit side by side (not inside `src/`).
 - If port 8000 is busy, stop other local servers and run `python devserver.py` again.
 
 ## 3) Firebase setup (required)
@@ -125,15 +186,22 @@ If you do not see the page:
 4. After project creation, click the **gear icon** (Project settings).
 5. In **General -> Your apps**, click the **Web icon** (`</>`) to create a Web app.
 6. Register the app (nickname can be anything, example: `typer-web`).
-7. Firebase shows config values. Copy them.
-8. Open `src/scripts/firebaseConfig.js`.
-9. Replace every `PASTE_*` value:
-   - `apiKey`
-   - `authDomain`
-   - `projectId`
-   - `storageBucket`
-   - `messagingSenderId`
-   - `appId`
+7. Firebase shows your web app config. Copy this entire block (you will use all six):
+   - `apiKey: <Firebase value>`
+   - `authDomain: <Firebase value>`
+   - `projectId: <Firebase value>`
+   - `storageBucket: <Firebase value>`
+   - `messagingSenderId: <Firebase value>`
+   - `appId: <Firebase value>`
+8. Go back to your **Typer Tool project folder**, open `src/scripts/firebaseConfig.js`.
+   - Before you edit: you must keep the same indentation as the original file when you paste — note what this indentation looks like before you begin, in case you have to fix it; each line should stay lined up inside the `{ ... }` block.
+9. In that file, select this entire block with placeholder values and paste the matching real values you copied from Firebase in step 7.
+   - `apiKey: <Placeholder value>`
+   - `authDomain: <Placeholder value>`
+   - `projectId: <Placeholder value>`
+   - `storageBucket: <Placeholder value>`
+   - `messagingSenderId: <Placeholder value>`
+   - `appId: <Placeholder value>`
 
 Important:
 - These values are safe to put in frontend code.
