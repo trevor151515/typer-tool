@@ -432,3 +432,13 @@ If you skip this, sign-in will fail.
 - Frontend allowlist alone is not enough security.
 - Keep Firestore rules strict.
 - Test with a second account to confirm blocked access works.
+
+## Support Development
+
+I build and maintain this project as an independent developer.
+
+If this tool has been useful to you and you'd like to support future improvements, you can do so here:
+
+☕ https://paypal.me/trvrj
+
+Thank you for trying the app. I hope it helps you create something meaningful.
