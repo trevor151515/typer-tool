@@ -1,7 +1,7 @@
 // Client-side access gating for /typer.
 // IMPORTANT: This is NOT a security boundary. Firestore/Storage rules are the real enforcement.
 
-export const allowedEmails = ["PASTE_ALLOWED_EMAIL_1@example.com", "PASTE_ALLOWED_EMAIL_2@example.com"];
+export const allowedEmails = ["trvrj.apps@gmail.com"];
 
 export function isUserAuthorizedByEmail(userEmail) {
     if (!userEmail) return false;
